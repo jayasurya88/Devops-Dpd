@@ -1,1 +1,31 @@
- 
+version: "3.8"
+services:
+  service1:
+    build: ./service_1
+    container_name: service1
+    expose:
+      - "5001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/ping"]
+      interval: 10s
+      retries: 3
+
+  service2:
+    build: ./service_2
+    container_name: service2
+    expose:
+      - "5002"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 10s
+      retries: 3
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      service1:
+        condition: service_healthy
+      service2:
+        condition: service_healthy 
