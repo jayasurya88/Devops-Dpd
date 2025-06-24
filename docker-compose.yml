@@ -4,9 +4,9 @@ services:
     build: ./service_1
     container_name: service1
     expose:
-      - "5001"
+      - "8001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5001/ping"]
+      test: ["CMD", "curl", "-f", "http://localhost:8001/ping"]
       interval: 10s
       retries: 3
 
@@ -14,16 +14,16 @@ services:
     build: ./service_2
     container_name: service2
     expose:
-      - "5002"
+      - "8002"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8002/ping"]
       interval: 10s
       retries: 3
 
   nginx:
     build: ./nginx
     ports:
-      - "8080:80"
+      - "8888:80"
     depends_on:
       service1:
         condition: service_healthy
